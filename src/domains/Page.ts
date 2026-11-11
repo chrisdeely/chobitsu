@@ -209,7 +209,7 @@ async function captureScreenshot() {
   }
 
   const time = now()
-  const canvas = await html2canvas(document.body, options)
+  const canvas = await getCanvas(document.body, options)
   const duration = now() - time
   screencastInterval = 2000
   if (duration * 5 > screencastInterval) {
@@ -241,4 +241,12 @@ async function captureScreenshot() {
   screenshotTimer = setTimeout(captureScreenshot, screencastInterval)
 
   isCapturingScreenshot = false
+}
+
+async function getCanvas(el: HTMLElement, options: Partial<html2canvasOptions>) {
+  const canvas = el.querySelector('canvas');
+  if (canvas) {
+    return canvas;
+  }
+  return await html2canvas(el, options);
 }
